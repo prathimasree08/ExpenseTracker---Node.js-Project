@@ -24,7 +24,7 @@ async function onSubmit(e) {
       };
       const response = await axios.post(url, newuser);
       if (response.status === 200) {
-        window.location.href = "../Login/login.html";
+        window.location.href = "../LOGIN/login.html";
       } else {
         throw new Error("Login Failed");
       }
