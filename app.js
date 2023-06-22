@@ -10,8 +10,10 @@ app.use(bodyParser.json({ extended: false }));
 const sequelize = require("./util/database");
 
 const signUpRoute = require("./routes/signup");
+const loginRoute = require("./routes/login");
 
 app.use(signUpRoute);
+app.use(loginRoute);
 
 sequelize
   .sync()
