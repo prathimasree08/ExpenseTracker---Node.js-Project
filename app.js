@@ -11,9 +11,11 @@ const sequelize = require("./util/database");
 
 const signUpRoute = require("./routes/signup");
 const loginRoute = require("./routes/login");
+const expenseRoute = require("./routes/expense");
 
 app.use(signUpRoute);
 app.use(loginRoute);
+app.use(expenseRoute);
 
 sequelize
   .sync()
