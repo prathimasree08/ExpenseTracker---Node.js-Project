@@ -23,16 +23,7 @@ router.get(
     userAuthenticate.authenticate,
     expenseController.deleteUserExpense
   );
-  router.get(
-    "/user/edit/:id",
-    userAuthenticate.authenticate,
-    expenseController.getEditExpense
-  );
-  router.post(
-    "/user/edit/:id",
-    userAuthenticate.authenticate,
-    expenseController.postEditExpense
-  );
+  
 
 
 module.exports = router;

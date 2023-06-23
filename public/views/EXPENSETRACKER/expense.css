@@ -38,9 +38,7 @@ form {
 input {
      border-radius: 1mm;
 }
-.btn {
-    background-color: rgb(32, 180, 29);
-}
+
 .msg {
     border: 1px;
     background-color: rgb(167, 181, 46);

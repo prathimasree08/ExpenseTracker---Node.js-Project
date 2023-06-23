@@ -68,29 +68,3 @@ exports.getEditExpense = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-exports.postEditExpense = (req, res, next) => {
-  const amount = req.body.amount;
-  const description = req.body.description;
-  const category = req.body.category;
-  const prodId = req.body.id;
-  const UserId = req.body.id;
-  User.Expense.findOne({
-    where: {
-      id: prodId,
-      userId: UserId,
-    },
-  })
-    .then((expense) => {
-      // console.log(expense);
-      expense.update({
-        amount: amount,
-        description: description,
-        category: category,
-      });
-      return expense.save();
-    })
-    .then((result) => {
-      return res.json(result);
-    })
-    .catch((err) => console.log(err));
-};

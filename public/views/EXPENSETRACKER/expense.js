@@ -8,7 +8,7 @@ const token = localStorage.getItem("token");
 
 function showOnScreen(user) {
   const li = document.createElement("li");
-  li.className = "list-group-item";
+  //li.className = "list-group-item";
   li.setAttribute("id", user.id);
   const textNode = `₹ ${user.amount}-  ${user.description}-  ${user.category}`;
   li.appendChild(document.createTextNode(textNode));
@@ -21,11 +21,11 @@ function showOnScreen(user) {
   li.appendChild(deleteBtn);
   expense.appendChild(li);
   // Add Edit Button//
-  var editBtn = document.createElement("button");
+  /*var editBtn = document.createElement("button");
   editBtn.className = "btn btn-secondary btn-sm float-end edit";
   editBtn.appendChild(document.createTextNode("EDIT"));
   li.appendChild(editBtn);
-  expense.appendChild(li);
+  expense.appendChild(li);*/
 }
 async function showTotalExpense() {
   let sum = 0;
@@ -109,47 +109,36 @@ async function removeItem(e) {
     console.log(err);
   }
 }
-//Edit item//
-expense.addEventListener("click", editUser);
-async function editUser(e) {
-  try {
-    if (e.target.classList.contains("edit")) {
-      var li = e.target.parentElement;
-      id = li.id;
-      const response = await axios.get(`http://localhost:4000/edit/${id}`);
-      console.log(response);
-      expense.removeChild(li);
-      amount.value = response.data.amount;
-      description.value = response.data.description;
-      category.value = response.data.category;
-      id = response.data.id;
-      console.log(id);
-      myForm.removeEventListener("submit", onSubmit);
-      myForm.addEventListener("submit", updateItem);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
-async function updateItem(e) {
-  // e.preventDefault();
-  var updatedExpense = {
-    amount: amount.value,
-    description: description.value,
-    category: category.value,
-  };
-  try {
-    // const response = await axios.put(`http://localhost:8080/update/${id}` , updatedExpense);
-    const response = await axios.put(
-      `http://localhost:4000/edit/${id}`,
-      updatedExpense
-    );
-    showOnScreen(response.data);
-    myForm.removeEventListener("submit", updateItem);
-    myForm.addEventListener("submit", onSubmit);
-    showTotalExpense();
-    window.location.reload();
-  } catch (err) {
-    console.log(err);
-  }
+
+document.getElementById('rzp-button1').onclick = async function (e) {
+  const token = localStorage.getItem('token')
+  const response  = await axios.get('http://localhost:4000/purchase/premiummembership', { headers: {"Authorization" : token} });
+  console.log(response);
+  var options =
+  {
+   "key": response.data.key_id, // Enter the Key ID generated from the Dashboard
+   "order_id": response.data.order.id,// For one time payment
+   // This handler function will handle the success payment
+   "handler": async function (response) {
+      const res = await axios.post('http://localhost:4000/purchase/updatetransactionstatus',{
+           order_id: options.order_id,
+           payment_id: response.razorpay_payment_id,
+       }, { headers: {"Authorization" : token} })
+      
+      console.log(res)
+       alert('You are a Premium User Now')
+       document.getElementById('rzp-button1').style.visibility = "hidden"
+       document.getElementById('message').innerHTML = "You are a premium user "
+       localStorage.setItem('token', res.data.token)
+       showLeaderboard()
+   },
+};
+const rzp1 = new Razorpay(options);
+rzp1.open();
+e.preventDefault();
+
+rzp1.on('payment.failed', function (response){
+  console.log(response)
+  alert('Something went wrong')
+});
 }
