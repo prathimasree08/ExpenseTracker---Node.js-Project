@@ -13,9 +13,15 @@ const signUpRoute = require("./routes/signup");
 const loginRoute = require("./routes/login");
 const expenseRoute = require("./routes/expense");
 
+const User = require("./models/user");
+const UserExpense = require("./models/expense");
+
 app.use(signUpRoute);
 app.use(loginRoute);
 app.use(expenseRoute);
+
+User.hasMany(UserExpense);
+UserExpense.belongsTo(User);
 
 sequelize
   .sync()

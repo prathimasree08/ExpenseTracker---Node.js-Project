@@ -4,16 +4,15 @@ const description = document.getElementById("description");
 const category = document.getElementById("category");
 const expense = document.getElementById("collection");
 const msg = document.querySelector(".msg");
-let id;
+const token = localStorage.getItem("token");
 
 function showOnScreen(user) {
   const li = document.createElement("li");
-  li.className = "col-sm";
+  li.className = "list-group-item";
   li.setAttribute("id", user.id);
   const textNode = `₹ ${user.amount}-  ${user.description}-  ${user.category}`;
   li.appendChild(document.createTextNode(textNode));
   expense.appendChild(li);
-
   var deleteBtn = document.createElement("button");
   deleteBtn.className = "btn btn-danger btn-sm float-end delete";
   // Append text node
@@ -21,7 +20,6 @@ function showOnScreen(user) {
   // Append delete btn to li
   li.appendChild(deleteBtn);
   expense.appendChild(li);
-
   // Add Edit Button//
   var editBtn = document.createElement("button");
   editBtn.className = "btn btn-secondary btn-sm float-end edit";
@@ -29,12 +27,13 @@ function showOnScreen(user) {
   li.appendChild(editBtn);
   expense.appendChild(li);
 }
-
 async function showTotalExpense() {
   let sum = 0;
   const title = document.getElementById("expense-title");
   try {
-    const response = await axios.get("http://localhost:4000/");
+    const response = await axios.get("http://localhost:4000/user/expense", {
+      headers: { Authorization: token },
+    });
     // console.log(response)
     response.data.forEach((user) => {
       sum += user.amount;
@@ -47,7 +46,9 @@ async function showTotalExpense() {
 
 window.addEventListener("DOMContentLoaded", async () => {
   try {
-    const response = await axios.get("http://localhost:4000/");
+    const response = await axios.get("http://localhost:4000/user/expense", {
+      headers: { Authorization: token },
+    });
     // console.log(response)
     response.data.forEach((user) => {
       showOnScreen(user);
@@ -59,14 +60,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 });
 // listen on submit
 myForm.addEventListener("submit", onSubmit);
-
 async function onSubmit(e) {
   e.preventDefault();
   if (amount.value === "" || description.value === "") {
     // alert('Please enter all fields');
     msg.classList.add("error");
     msg.innerHTML = "Please enter all fields";
-
     // Remove error after 3 seconds
     setTimeout(() => msg.remove(), 3000);
   } else {
@@ -77,8 +76,9 @@ async function onSubmit(e) {
     };
     try {
       const response = await axios.post(
-        "http://localhost:4000/user",
-        userExpense
+        "http://localhost:4000/user/expense",
+        userExpense,
+        { headers: { Authorization: token } }
       );
       showOnScreen(response.data);
       showTotalExpense();
@@ -92,14 +92,15 @@ async function onSubmit(e) {
 }
 //Remove item
 expense.addEventListener("click", removeItem);
-
 async function removeItem(e) {
   try {
     if (e.target.classList.contains("delete")) {
       if (confirm("Are You Sure?")) {
         var li = e.target.parentElement;
         id = li.id;
-        await axios.delete(`http://localhost:4000/delete/${id}`);
+        await axios.delete(`http://localhost:4000/user/delete/${id}`, {
+          headers: { Authorization: token },
+        });
         expense.removeChild(li);
         showTotalExpense();
       }
@@ -110,7 +111,6 @@ async function removeItem(e) {
 }
 //Edit item//
 expense.addEventListener("click", editUser);
-
 async function editUser(e) {
   try {
     if (e.target.classList.contains("edit")) {
@@ -131,7 +131,6 @@ async function editUser(e) {
     console.log(err);
   }
 }
-
 async function updateItem(e) {
   // e.preventDefault();
   var updatedExpense = {
