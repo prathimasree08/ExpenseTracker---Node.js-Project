@@ -4,6 +4,10 @@ const description = document.getElementById("description");
 const category = document.getElementById("category");
 const expense = document.getElementById("collection");
 const msg = document.querySelector(".msg");
+const boardbtn = document.getElementById("board-btn");
+const leaderBoard = document.getElementById("collection-board");
+const leaderBoard1 = document.getElementById("leaderboard");
+const boardSection = document.getElementById("leadership-br");
 const token = localStorage.getItem("token");
 
 function showOnScreen(user) {
@@ -31,7 +35,7 @@ async function showTotalExpense() {
   let sum = 0;
   const title = document.getElementById("expense-title");
   try {
-    const response = await axios.get("http://localhost:4000/user/expense", {
+    const response = await axios.get("http://localhost:4000/user/expense" , {
       headers: { Authorization: token },
     });
     // console.log(response)
@@ -53,10 +57,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     response.data.forEach((user) => {
       showOnScreen(user);
     });
-    showTotalExpense();
+    
   } catch (err) {
     console.error(err);
   }
+  showTotalExpense();
+    isPremium();
 });
 // listen on submit
 myForm.addEventListener("submit", onSubmit);
@@ -110,8 +116,29 @@ async function removeItem(e) {
   }
 }
 
+async function isPremium() {
+  try {
+    const user = await axios.get("http://localhost:4000/user/status" , {
+      headers: { Authorization: token },
+    });
+    
+    console.log(user)
+    if (user.data === true) {
+      document.getElementById('rzp-button1').style.visibility = "hidden"
+       document.getElementById('message').innerHTML = "You are a premium user "
+       document.getElementById('message').style.color = 'red'
+      //razorpayPr.style.display = "flex";
+      document.getElementById("board-btn").style.display = "inline";
+      document.getElementById("leadership-br").style.display = "block";
+      //reportBtn.style.display = "inline";
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 document.getElementById('rzp-button1').onclick = async function (e) {
-  const token = localStorage.getItem('token')
+  //const token = localStorage.getItem('token')
   const response  = await axios.get('http://localhost:4000/purchase/premiummembership', { headers: {"Authorization" : token} });
   console.log(response);
   var options =
@@ -129,8 +156,8 @@ document.getElementById('rzp-button1').onclick = async function (e) {
        alert('You are a Premium User Now')
        document.getElementById('rzp-button1').style.visibility = "hidden"
        document.getElementById('message').innerHTML = "You are a premium user "
-       localStorage.setItem('token', res.data.token)
-       showLeaderboard()
+       //localStorage.setItem('token', res.data.token)
+       //showLeaderboard()
    },
 };
 const rzp1 = new Razorpay(options);
@@ -142,3 +169,34 @@ rzp1.on('payment.failed', function (response){
   alert('Something went wrong')
 });
 }
+
+
+boardbtn.addEventListener("click", showLeaderBoard);
+
+async function showLeaderBoard(e) {
+  e.preventDefault();
+  try {
+    document.getElementById("leaderboard").style.display = "block";
+    const users = await axios.get(
+      "http://localhost:4000/premium/leadershipboard",
+      { headers: { Authorization: token } }
+    );
+    // console.log(users);
+    users.data.forEach((user) => {
+      // console.log(user)
+      showBoard(user);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function showBoard(user) {
+  const li = document.createElement("li");
+  li.className = "list-group-item";
+  // li.setAttribute('id', user.id);
+  const textNode = `Name: ${user.name}-  Total Expense:${user.totalExpense}`;
+  li.appendChild(document.createTextNode(textNode));
+  leaderBoard.appendChild(li);
+}
+

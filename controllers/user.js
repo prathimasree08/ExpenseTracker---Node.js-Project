@@ -52,3 +52,12 @@ exports.postSignUpUser = async (req, res, next) => {
   function geenerateToken(id) {
     return jwt.sign({ userId: id }, "secretkey");
   }
+
+  exports.getUserStatus = (req, res, next) => {
+    const userId = req.user.id;
+    User.findAll({ where: { id: userId } })
+      .then((user) => {
+        return res.json(user[0].isPremiumUser);
+      })
+      .catch((err) => console.log(err));
+  };
