@@ -7,6 +7,7 @@ let userId;
 
 myForm.addEventListener("submit", onSubmit);
 
+
 async function onSubmit(e) {
   e.preventDefault();
   try {
@@ -34,5 +35,5 @@ async function onSubmit(e) {
 forgotPassword.addEventListener("click", reset);
 
 function reset(e) {
-  window.location.href = "../PasswordReset/forgetPassword.html";
+  window.location.href = "../PASSWORDRESET/forgotPassword.html";
 }

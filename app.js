@@ -14,6 +14,7 @@ const loginRoute = require("./routes/login");
 const expenseRoute = require("./routes/expense");
 const purchaseRoutes = require('./routes/purchase');
 const premiumRoute = require('./routes/premium');
+const forgotPasswordRoute = require('./routes/forgotpassword');
 
 const dotenv = require('dotenv');
 
@@ -29,6 +30,7 @@ app.use(loginRoute);
 app.use(expenseRoute);
 app.use(purchaseRoutes);
 app.use(premiumRoute);
+app.use(forgotPasswordRoute);
 
 User.hasMany(UserExpense);
 UserExpense.belongsTo(User);
