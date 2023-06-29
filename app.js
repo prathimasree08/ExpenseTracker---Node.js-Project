@@ -24,6 +24,7 @@ dotenv.config();
 const User = require("./models/user");
 const UserExpense = require("./models/expense");
 const Order = require("./models/orders");
+const ForgotPassword = require("./models/forgotpassword");
 
 app.use(signUpRoute);
 app.use(loginRoute);
@@ -37,6 +38,9 @@ UserExpense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(ForgotPassword );
+ForgotPassword .belongsTo(User);
 
 sequelize
   .sync()
