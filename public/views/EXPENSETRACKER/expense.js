@@ -9,6 +9,8 @@ const leaderBoard = document.getElementById("collection-board");
 const leaderBoard1 = document.getElementById("leaderboard");
 const boardSection = document.getElementById("leadership-br");
 const token = localStorage.getItem("token");
+const reportBtn = document.getElementById("report");
+
 
 function showOnScreen(user) {
   const li = document.createElement("li");
@@ -130,7 +132,7 @@ async function isPremium() {
       //razorpayPr.style.display = "flex";
       document.getElementById("board-btn").style.display = "inline";
       document.getElementById("leadership-br").style.display = "block";
-      //reportBtn.style.display = "inline";
+      reportBtn.style.display = "inline";
     }
   } catch (err) {
     console.log(err);
@@ -198,5 +200,11 @@ function showBoard(user) {
   const textNode = `Name: ${user.name}-  Total Expense:${user.totalExpense}`;
   li.appendChild(document.createTextNode(textNode));
   leaderBoard.appendChild(li);
+}
+
+reportBtn.addEventListener("click", report);
+
+function report() {
+  window.location.href = "../EXPENSEREPORT/index.html";
 }
 
