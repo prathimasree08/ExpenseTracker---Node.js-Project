@@ -10,4 +10,16 @@ router.get(
   premiumController.getAllUsersWithExpenses
 );
 
+
+router.get(
+  "/user/download",
+  userAuthenticate.authenticate,
+  premiumController.download
+);
+router.get(
+  "/user/downloadlink",
+  userAuthenticate.authenticate,
+  premiumController.downloadFile
+);
+
 module.exports = router;

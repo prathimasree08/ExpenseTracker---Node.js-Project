@@ -25,6 +25,7 @@ const User = require("./models/user");
 const UserExpense = require("./models/expense");
 const Order = require("./models/orders");
 const ForgotPassword = require("./models/forgotpassword");
+const DownloadLink = require("./models/download");
 
 app.use(signUpRoute);
 app.use(loginRoute);
@@ -41,6 +42,9 @@ Order.belongsTo(User);
 
 User.hasMany(ForgotPassword );
 ForgotPassword .belongsTo(User);
+
+User.hasMany(DownloadLink);
+DownloadLink.belongsTo(User);
 
 sequelize
   .sync()
