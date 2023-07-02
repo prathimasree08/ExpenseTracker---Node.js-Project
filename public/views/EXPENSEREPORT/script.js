@@ -6,7 +6,7 @@ const table = document.getElementById("table-body");
 const tableDown = document.getElementById("download-body");
 
 homeBtn.addEventListener("click", function home() {
-  window.location.href = "../ExpenseTracker/index.html";
+  window.location.href = "../EXPENSETRACKER/expense.html";
 });
 
 window.addEventListener("DOMContentLoaded", async () => {

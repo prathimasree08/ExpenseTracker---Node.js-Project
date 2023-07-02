@@ -10,6 +10,10 @@ const leaderBoard1 = document.getElementById("leaderboard");
 const boardSection = document.getElementById("leadership-br");
 const token = localStorage.getItem("token");
 const reportBtn = document.getElementById("report");
+const pagination = document.getElementById("pagination");
+const pageInfo = document.getElementById("page-info");
+
+const displayedExpenses = [];
 
 
 function showOnScreen(user) {
@@ -32,6 +36,8 @@ function showOnScreen(user) {
   editBtn.appendChild(document.createTextNode("EDIT"));
   li.appendChild(editBtn);
   expense.appendChild(li);*/
+
+  displayedExpenses.push(li);
 }
 async function showTotalExpense() {
   let sum = 0;
@@ -49,16 +55,19 @@ async function showTotalExpense() {
     console.log(err);
   }
 }
-
+const page = 1;
 window.addEventListener("DOMContentLoaded", async () => {
+  
   try {
-    const response = await axios.get("http://localhost:4000/user/expense", {
+    const response = await axios.get(`http://localhost:4000/user/expense/page/?page=${page}`, {
       headers: { Authorization: token },
     });
     // console.log(response)
-    response.data.forEach((user) => {
+    response.data.expenses.forEach((user) => {
       showOnScreen(user);
     });
+    showPagination(response);
+
     
   } catch (err) {
     console.error(err);
@@ -207,4 +216,74 @@ reportBtn.addEventListener("click", report);
 function report() {
   window.location.href = "../EXPENSEREPORT/index.html";
 }
+
+
+function showPagination(response) {
+  pagination.innerHTML = '';
+  const {
+    currentPage,
+    hasNextPage,
+    nextPage,
+    hasPreviousPage,
+    previousPage,
+    lastPage,
+  } = response.data.pageData;
+
+  if (hasPreviousPage) {
+    const btn2 = document.createElement("button");
+    // btn2.add.className = 'page-link'
+    btn2.innerHTML = previousPage;
+    btn2.addEventListener("click", () => getPage(previousPage));
+    pagination.appendChild(btn2);
+  }
+  const btn1 = document.createElement("button");
+  // btn1.add.className = 'page-link'
+  btn1.innerHTML = `<h5>${currentPage}</h5>`;
+  btn1.addEventListener("click", () => getPage(currentPage));
+  pagination.appendChild(btn1);
+
+  if (hasNextPage) {
+    const btn3 = document.createElement("button");
+    // btn3.add.className = 'page-link'
+    btn3.innerHTML = nextPage;
+    btn3.addEventListener("click", () => getPage(nextPage));
+    pagination.appendChild(btn3);
+  }
+  pageInfo.textContent = `Page${currentPage} of ${lastPage}`;
+}
+
+
+async function getPage(page) {
+  try {
+    const response = await axios.get(
+      `http://localhost:4000/user/expense/page/?page=${page}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    removeFromScreen()
+    //   console.log(response);
+    response.data.expenses.forEach((user) => {
+      showOnScreen(user);
+    });
+    showPagination(response);
+  } catch (err) {
+    console.error(err);
+  }
+  showTotalExpense();
+  isPremium();
+}
+
+function removeFromScreen(){
+  displayedExpenses.forEach(li => {
+      expense.removeChild(li);
+    });
+    // clear the displayedExpenses array
+    displayedExpenses.length = 0;
+}
+
+
+
 

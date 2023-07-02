@@ -6,7 +6,11 @@ const expenseController = require("../controllers/expense");
 const userAuthenticate = require("../middleware/auth");
 
 
-
+router.get(
+  "/user/expense/page/",
+  userAuthenticate.authenticate,
+  expenseController.getPageData
+);
 
 router.get(
     "/user/expense",
