@@ -9,11 +9,11 @@
     <!-- <link rel="stylesheet" href="styles.css"> -->
     <title>Expense Tracker</title>
   </head>
-  <body style="background-color: grey;">
+  <body style="background-color: #460202;">
     <div class="container">
       <div class="row">
         <div class="col-12 text-center">
-          <div class="box"><h1>Expense Tracker</h1></div>
+          <div class="box"><h1 style="color:white">Expense Tracker</h1></div>
           <button id="logout" class="btn btn-info btn-sm float-end logout" style="margin-left: 2px;">LOGOUT</button>
           <button id="razorpay" class="btn btn-info btn-sm float-end membership">Buy Premium</button>
           <button id="report" class="btn btn-secondary btn-sm float-start expensereport" style="margin-bottom: 5px; display: none;">Expense Report</button>
@@ -28,15 +28,15 @@
               <div class="msg"></div>
               <div class="row g-3">
                 <div class="col-sm-12 col-md-4">
-                  <label for="expense-amount" class="form-label">Choose Expense Amount:</label>
+                  <label for="expense-amount" class="form-label" style="color:white">Choose Expense Amount:</label>
                   <input type="number" name="expense-amount" id="expense-amount" class="form-control">
                 </div>
                 <div class="col-sm-12 col-md-4">
-                  <label for="description" class="form-label">Used for:</label>
+                  <label for="description" class="form-label" style="color:white">Description:</label>
                   <input type="text" name="description" id="description" class="form-control">
                 </div>
                 <div class="col-sm-12 col-md-4">
-                  <label for="category" class="form-label">Category</label>
+                  <label for="category" class="form-label" style="color:white">Category</label>
                   <select id="category" name="category" class="form-select">
                     <option value="Movie">Movie</option>
                     <option value="Petrol">Petrol</option>
@@ -56,7 +56,7 @@
       <section>
         <div class="row align-items-center">
   <div class="col-sm-12 col-md-9">
-    <h3 id="expense-title" class="mt-3" style="text-align: center; padding-left: 200px; margin-bottom: 16px;">Total Expenditure:</h3>
+    <h3 id="expense-title" class="mt-3" style="text-align: center; padding-left: 200px; margin-bottom: 16px; color:white">Total Expenditure:</h3>
   </div>
   <div class="col-sm-12 col-md-3">
     <div class="row align-items-center">

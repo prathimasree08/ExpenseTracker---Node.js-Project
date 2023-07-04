@@ -16,13 +16,13 @@ const pagination = document.getElementById('pagination');
 const pageInfo = document.getElementById('page-info');
 reportBtn.addEventListener('click', report)
 const rowsperpage = document.getElementById('rowsperpage');
-//const logout = document.getElementById('logout')
+const logout = document.getElementById('logout')
 let selectedOption;
 
-/*logout.addEventListener('click', ()=>{
-    window.location.href = '../Login/login.html';
+logout.addEventListener('click', ()=>{
+    window.location.href = '../LOGIN/login.html';
     localStorage.removeItem('token');
-})*/
+})
 
 rowsperpage.addEventListener('change',(e)=>{
     selectedOption = e.target.options[e.target.selectedIndex];
@@ -130,15 +130,7 @@ function showOnScreen(user) {
     // Append delete btn to li
     li.appendChild(deleteBtn);
     expense.appendChild(li);
-
-    // Add Edit Button//
-    /*var editBtn= document.createElement('button');
-    editBtn.className='btn btn-secondary btn-sm float-end edit';
-    editBtn.appendChild(document.createTextNode('EDIT'));
-    li.appendChild(editBtn);
-    expense.appendChild(li);*/
-
-    displayedExpenses.push(li);
+   displayedExpenses.push(li);
 
 }
 function removeFromScreen(){
@@ -261,50 +253,7 @@ async function onSubmit(e) {
     }
         
     }
-   //Edit item//
-   /* expense.addEventListener('click', editUser);
-
-    async function editUser(e) {
-        try{
-            if(e.target.classList.contains('edit')){
-                var li=e.target.parentElement;
-                id = li.id;
-                const response = await axios.get(`http://localhost:4000/user/edit/${id}`, { headers: {"Authorization" : token }});
-                console.log(response)
-                expense.removeChild(li);
-                amount.value = response.data.amount;
-                description.value = response.data.description;
-                category.value = response.data.category
-                id= response.data.id
-                console.log(id)
-                myForm.removeEventListener('submit', onSubmit);
-                myForm.addEventListener('submit', updateItem);   
-            }
-        }catch (err){
-            console.log(err);
-        }
-    }*/
-    
-
-   /* async function updateItem(e){
-        // e.preventDefault();
-        var updatedExpense = {
-            amount: amount.value,
-            description: description.value,
-            category: category.value
-            };
-        try{
-            const response = await axios.put(`http://localhost:4000/user/edit/${id}`, updatedExpense, { headers: {"Authorization" : token }})
-            showOnScreen(response.data);
-            myForm.removeEventListener('submit', updateItem);
-            myForm.addEventListener('submit', onSubmit);
-            showTotalExpense();
-            window.location.reload()
-        } catch (err) {
-            console.log(err);
-        }
-    }*/
-
+   
     razorpayBtn.addEventListener('click', payment)
 
     async function payment(e) {
